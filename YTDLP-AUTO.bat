@@ -4,7 +4,7 @@
 :: Created by Taco_PC aka TacoYummers on github
 :: I hope you love my tools!! <3
 
-set "VERSION=1.0.3"
+set "VERSION=1.0.4"
 set "SCRIPT_DIR=%~dp0"
 set "SAVE_PATH=%SCRIPT_DIR%saved"
 setlocal enabledelayedexpansion
