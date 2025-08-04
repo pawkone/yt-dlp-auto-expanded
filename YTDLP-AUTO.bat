@@ -61,7 +61,7 @@ echo =========================================
 echo Welcome to YTDLP AUTO - Taco_PC - V%VERSION%
 echo =========================================
 echo.
-powershell -File scriptData/scripts/selection.ps1 -Version "%VERSION%"
+powershell -ExecutionPolicy Bypass -File scriptData/scripts/selection.ps1 -Version "%VERSION%"
 if %ERRORLEVEL% neq 0 (
     echo PowerShell script failed with error code %ERRORLEVEL%.
     pause
