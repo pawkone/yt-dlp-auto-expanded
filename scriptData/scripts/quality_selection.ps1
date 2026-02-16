@@ -1,6 +1,6 @@
 $selected = 0
-$options = @("Video (MP4)", "Playlist (MP4)", "Video (OGG)", "Playlist (OGG)", "Video (MP3)", "Playlist (MP3)")
-$outputopt = @("A","B","C","D","E","F")
+$options = @("Best available","1080p","720p","480p","360p","240p","144p")
+$outputopt = @("BEST","1080","720","480","360","240","144")
 $menuStart = [System.Console]::CursorTop
 for ($i = 0; $i -lt $options.Count; $i++) {
     Write-Host "$($options[$i])"
@@ -23,4 +23,4 @@ do {
         break
     }
 } while ($true)
-"$($outputopt[$selected])" | Out-File "scriptData/settings/tempoption.cfg" -NoNewline -Encoding ASCII
+"$($outputopt[$selected])" | Out-File "scriptData/settings/tempquality.cfg" -NoNewline -Encoding ASCII
