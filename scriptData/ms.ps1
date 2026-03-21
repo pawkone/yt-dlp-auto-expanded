@@ -1,6 +1,6 @@
 $selected = 0
-$options = @("Video (MP4)", "Playlist (MP4)", "Video (OGG)", "Playlist (OGG)", "Video (MP3)", "Playlist (MP3)")
-$outputopt = @("A","B","C","D","E","F")
+$options = @("Video (MP4)", "Playlist (MP4)", "Video (MP3)", "Playlist (MP3)")
+$outputopt = @("A","B","C","D")
 $menuStart = [System.Console]::CursorTop
 for ($i = 0; $i -lt $options.Count; $i++) {
     Write-Host "$($options[$i])"
