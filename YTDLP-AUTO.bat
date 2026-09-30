@@ -7,7 +7,8 @@ setlocal enabledelayedexpansion
 :: Now forked by Pawkone on GitHub the new account of the original creator
 :: I will continue to update and maintain this project as best as I can :)
 
-set "VERSION=1.0.6.1"
+set "VERSION=1.0.6.2"
+set "JUSTSETUP-ED=0"
 set "TITLE=YTDLPAUTO-EXPANDED - Pawkone - V%VERSION%"
 set "HEADER==========================================="
 set "SCRIPT_DIR=%~dp0"
@@ -15,23 +16,37 @@ set "SAVE_PATH=%SCRIPT_DIR%saved"
 set "YTDLP_GLOBAL_FLAGS=--no-mtime --no-post-overwrites --no-overwrites --no-abort-on-error "
 title %TITLE%
 if not exist "%SAVE_PATH%" mkdir "%SAVE_PATH%"
-if exist "scriptData/tempoption.cfg" (
-	powershell -Command "Remove-Item -Path 'scriptData/tempoption.cfg' -Force"
-)
+if exist "scriptData/tempoption.cfg" (powershell -Command "Remove-Item -Path 'scriptData/tempoption.cfg' -Force")
 for %%F in (
 ms.ps1
 qs.ps1
-yt-dlp.exe
-ffmpeg.exe
-avcodec-62.dll
-avdevice-62.dll
-avfilter-11.dll
-avformat-62.dll
-avutil-60.dll
-swresample-6.dll
-swscale-9.dll
 ) do call :CHECKFILE "%%F"
-call :ASK_UPDATE
+if not exist "scriptData/yt-dlp.exe" (
+set "JUSTSETUP-ED=1"
+cls
+echo %HEADER%
+echo %TITLE%
+echo %HEADER%
+echo.
+echo Setup Process
+echo Downloading Tools - YTDLP
+curl -L "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" -o "scriptData/yt-dlp.exe"
+)
+if not exist "scriptData/ffmpeg.exe" (
+set "JUSTSETUP-ED=1"
+cls
+echo %HEADER%
+echo %TITLE%
+echo %HEADER%
+echo.
+echo Setup Process
+echo Downloading Tools - FFMPEG
+curl -L "https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-essentials.7z" -o "scriptData/ffmpeg.7z"
+"scriptData\7z.exe" e "scriptData\ffmpeg.7z" -o"scriptData" "*/ffmpeg.exe" -r -y
+if exist "scriptData\ffmpeg.7z" del "scriptData\ffmpeg.7z"
+)
+cls
+if %JUSTSETUP-ED% == 0 (call :ASK_UPDATE)
 goto MENU
 :MENU
 cls
@@ -232,7 +247,7 @@ if /i "%ans%"=="y" (
 	exit /b
 )
 echo.
-"scriptData/yt-dlp.exe" -U
+"scriptData/yt-dlp.exe" -U --update-to nightly
 if errorlevel 1 (
 	echo.
 	echo Failed to update yt-dlp.exe
