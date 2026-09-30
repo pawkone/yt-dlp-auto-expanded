@@ -28,8 +28,10 @@ echo %HEADER%
 echo %TITLE%
 echo %HEADER%
 echo.
+echo.
 echo Setup Process
 echo Downloading Tools - YTDLP
+echo.
 curl -L "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" -o "scriptData/yt-dlp.exe"
 )
 if not exist "scriptData/ffmpeg.exe" (
@@ -39,8 +41,10 @@ echo %HEADER%
 echo %TITLE%
 echo %HEADER%
 echo.
+echo.
 echo Setup Process
 echo Downloading Tools - FFMPEG
+echo.
 curl -L "https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-essentials.7z" -o "scriptData/ffmpeg.7z"
 "scriptData\7z.exe" e "scriptData\ffmpeg.7z" -o"scriptData" "*/ffmpeg.exe" -r -y
 if exist "scriptData\ffmpeg.7z" del "scriptData\ffmpeg.7z"
