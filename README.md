@@ -10,3 +10,4 @@ You don't have to download any other dependencies for the tool, they are built-i
 
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp)
 - [ffmpeg](https://ffmpeg.org/)
+- [deno](https://deno.com/)
