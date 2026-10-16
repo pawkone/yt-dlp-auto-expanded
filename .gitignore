@@ -1,4 +1,7 @@
 saved/
-scriptData/settings/
+cookies.txt
 *.dll
 *.exe
+!7z.exe
+*.zip
+*.7z

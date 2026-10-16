@@ -7,14 +7,15 @@ setlocal enabledelayedexpansion
 :: Now forked by Pawkone on GitHub the new account of the original creator
 :: I will continue to update and maintain this project as best as I can :)
 
-set "VERSION=1.0.6.2"
-set "JUSTSETUP-ED=0"
-set "TITLE=YTDLPAUTO-EXPANDED - Pawkone - V%VERSION%"
+set "VERSION=1.0.6.3"
+set "TITLE=YT-DLP-AUTO-EXPANDED - Pawkone - V%VERSION%"
 set "HEADER==========================================="
 set "SCRIPT_DIR=%~dp0"
 set "SAVE_PATH=%SCRIPT_DIR%saved"
 set "YTDLP_GLOBAL_FLAGS=--no-mtime --no-post-overwrites --no-overwrites --no-abort-on-error "
 title %TITLE%
+if exist "scriptData\deno.zip" del "scriptData\deno.zip"
+if exist "scriptData\ffmpeg.7z" del "scriptData\ffmpeg.7z"
 if not exist "%SAVE_PATH%" mkdir "%SAVE_PATH%"
 if exist "scriptData/tempoption.cfg" (powershell -Command "Remove-Item -Path 'scriptData/tempoption.cfg' -Force")
 for %%F in (
@@ -22,7 +23,6 @@ ms.ps1
 qs.ps1
 ) do call :CHECKFILE "%%F"
 if not exist "scriptData/yt-dlp.exe" (
-set "JUSTSETUP-ED=1"
 cls
 echo %HEADER%
 echo %TITLE%
@@ -34,8 +34,21 @@ echo Downloading Tools - YTDLP
 echo.
 curl -L "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" -o "scriptData/yt-dlp.exe"
 )
+if not exist "scriptData/deno.exe" (
+cls
+echo %HEADER%
+echo %TITLE%
+echo %HEADER%
+echo.
+echo.
+echo Setup Process
+echo Downloading Tools - DENO
+echo.
+curl -L "https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip" -o "scriptData\deno.zip"
+"scriptData\7z.exe" e "scriptData\deno.zip" -o"scriptData" "deno.exe" -r -y
+if exist "scriptData\deno.zip" del "scriptData\deno.zip"
+)
 if not exist "scriptData/ffmpeg.exe" (
-set "JUSTSETUP-ED=1"
 cls
 echo %HEADER%
 echo %TITLE%
@@ -50,7 +63,6 @@ curl -L "https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-essentials.7z" -o "script
 if exist "scriptData\ffmpeg.7z" del "scriptData\ffmpeg.7z"
 )
 cls
-if %JUSTSETUP-ED% == 0 (call :ASK_UPDATE)
 goto MENU
 :MENU
 cls
@@ -193,7 +205,7 @@ echo %DL_OUTPUT% > nul 2>&1
 cls
 echo Starting to download, %~1...
 echo.
-"scriptData/yt-dlp.exe" %YTDLP_GLOBAL_FLAGS% %DL_FLAGS% -o "%DL_OUTPUT%" "%URL%"
+"scriptData/yt-dlp.exe" --js-runtimes "deno:scriptData\deno.exe" --remote-components ejs:npm --cookies cookies.txt %YTDLP_GLOBAL_FLAGS% %DL_FLAGS% -o "%DL_OUTPUT%" "%URL%"
 if ERRORLEVEL 1 (
 	echo Download failed!
 	pause
@@ -219,7 +231,7 @@ exit /b
 set "SECONDS=3"
 for /l %%i in (%SECONDS%,-1,1) do (
 	cls
-	echo Thank you for using YTDLPAUTO-EXPANDED - Pawkone
+	echo Thank you for using %TITLE%
 	echo.
 	echo Downloaded Successfully!
 	echo Opening folder in %%i...
@@ -232,33 +244,5 @@ if not exist "scriptData/%~1" (
 	echo Error: scriptData/%~1 not found!
 	pause >nul
 	exit /b 1
-)
-exit /b
-:ASK_UPDATE
-cls
-echo %HEADER%
-echo %TITLE%
-echo %HEADER%
-echo.
-set /p "ans=Check for yt-dlp updates? (Y/N, leave empty to skip): "
-if /i "%ans%"=="y" (
-	echo.
-	echo Updating yt-dlp.exe...
-) else (
-	echo.
-	echo Skipping update...
-	timeout /t 1 >nul
-	exit /b
-)
-echo.
-"scriptData/yt-dlp.exe" -U --update-to nightly
-if errorlevel 1 (
-	echo.
-	echo Failed to update yt-dlp.exe
-	pause
-) else (
-	echo.
-	echo yt-dlp.exe updated successfully!
-	timeout /t 2 >nul
 )
 exit /b
